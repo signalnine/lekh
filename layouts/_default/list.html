@@ -10,7 +10,7 @@
   <div>
 
     <!-- orders content according to the "publishdate" field in front matter -->
-    {{ range .Pages.ByPublishDate }}
+    {{ range .Pages.ByPublishDate.Reverse }}
     <div>
       <a href="{{ .Permalink }}">{{ .Title }}</a><br />
       <time>{{ .Date.Format "January 2, 2006" }}</time>
