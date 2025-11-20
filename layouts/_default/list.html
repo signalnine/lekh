@@ -7,15 +7,14 @@
 
   <h3>Posts</h3>
 
-  <div>
+  <div class="post-list">
 
     <!-- orders content according to the "publishdate" field in front matter -->
     {{ range .Pages.ByPublishDate.Reverse }}
     <div>
-      <a href="{{ .Permalink }}">{{ .Title }}</a><br />
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
       <time>{{ .Date.Format "January 2, 2006" }}</time>
     </div>
-    <br />
     {{ end }}
   </div>
 </body>
