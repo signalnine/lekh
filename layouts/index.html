@@ -27,24 +27,37 @@
 		</tr>
 	</table>
 
-	<h3>Posts</h3>
+	<div class="content-with-sidebar">
+		<main class="main-content">
+			<h3>Posts</h3>
 
-	<div class="post-list">
+			<div class="post-list">
 
-		<!-- orders content according to the "publishdate" field in front matter -->
-		{{ range first (.Site.Params.PostLimit | default 4) (where .Site.RegularPages.ByPublishDate.Reverse "Section" "posts") }}
-		<div>
-			<a href="{{ .Permalink }}">{{ .Title }}</a>
-			<time>{{ .Date.Format "January 2, 2006" }}</time>
-		</div>
-		{{ end }}
+				<!-- orders content according to the "publishdate" field in front matter -->
+				{{ range first (.Site.Params.PostLimit | default 4) (where .Site.RegularPages.ByPublishDate.Reverse "Section" "posts") }}
+				<div>
+					<a href="{{ .Permalink }}">{{ .Title }}</a>
+					<time>{{ .Date.Format "January 2, 2006" }}</time>
+				</div>
+				{{ end }}
 
 
-		<h3><a href="posts/">View all posts</a></h3>
+				<h3><a href="posts/">View all posts</a></h3>
+			</div>
+		</main>
+
+		<aside class="sidebar">
+			<h3>Recent Commits</h3>
+
+			<div id="github-commits" class="commits-list">
+				<p class="text-secondary">Loading commits...</p>
+			</div>
+		</aside>
 	</div>
 	{{ if ne .Site.Params.GoatCounterCode "" }}
 	<script data-goatcounter="{{ .Site.Params.GoatCounterCode }}" async src="//gc.zgo.at/count.js"></script>
 	{{ end }}
+	<script src="/js/github-commits.js"></script>
 </body>
 
 </html>

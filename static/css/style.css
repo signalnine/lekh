@@ -41,7 +41,7 @@ body {
   line-height: 1.7em;
   font-size: 1.05em;
   color: var(--text-primary);
-  max-width: 42rem;
+  max-width: 75rem;
   padding: 2rem;
   margin: auto;
   background: var(--bg-primary);
@@ -157,6 +157,89 @@ p {
   margin-top: 0.5rem;
 }
 
+/* Layout with sidebar */
+.content-with-sidebar {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  align-items: flex-start;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar {
+  width: 22rem;
+  flex-shrink: 0;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+}
+
+/* Commits list */
+.commits-list {
+  margin: 1rem 0;
+}
+
+.commit-item {
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.875rem;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px var(--shadow);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+  border-left: 3px solid transparent;
+}
+
+.commit-item:hover {
+  box-shadow: 0 6px 16px var(--shadow);
+  transform: translateY(-2px);
+  border-left-color: var(--accent-green);
+  background: var(--bg-tertiary);
+  border-color: var(--accent-blue);
+}
+
+.commit-item > a {
+  font-weight: 500;
+  font-size: 0.95em;
+  border-bottom: none;
+  display: block;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.commit-meta {
+  color: var(--text-tertiary);
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.commit-author,
+.commit-repo {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.commit-separator {
+  color: var(--text-tertiary);
+}
+
+.commit-sha {
+  font-size: 0.9em;
+  background: var(--bg-tertiary);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  color: var(--accent-cyan);
+  border: 1px solid var(--border);
+}
+
 /* Post meta */
 .post-meta {
   color: var(--text-tertiary);
@@ -266,6 +349,17 @@ footer a {
 }
 
 /* Responsive */
+@media (max-width: 900px) {
+  .content-with-sidebar {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-top: 2rem;
+  }
+}
+
 @media (max-width: 600px) {
   body {
     font-size: 1em;
@@ -286,6 +380,10 @@ footer a {
 
   .post-list > div {
     padding: 1rem;
+  }
+
+  .commit-item {
+    padding: 0.75rem;
   }
 
   pre {
