@@ -19,38 +19,46 @@
 
       const repos = await reposResponse.json();
 
-      // Fetch commits from the most recently pushed repos
-      const commits = [];
-      for (const repo of repos) {
-        if (commits.length >= COMMITS_LIMIT) break;
+      // Fetch commits from multiple repos and merge by date
+      const allCommits = [];
 
+      // Fetch commits from top repos in parallel
+      const commitPromises = repos.slice(0, 5).map(async (repo) => {
         try {
           const commitsResponse = await fetch(
-            `https://api.github.com/repos/${repo.full_name}/commits?per_page=5`
+            `https://api.github.com/repos/${repo.full_name}/commits?per_page=10`
           );
 
           if (commitsResponse.ok) {
             const repoCommits = await commitsResponse.json();
-            for (const commit of repoCommits) {
-              if (commits.length >= COMMITS_LIMIT) break;
-
-              commits.push({
-                message: commit.commit.message,
-                sha: commit.sha,
-                author: commit.commit.author.name,
-                date: commit.commit.author.date,
-                url: commit.html_url,
-                repo: repo.full_name
-              });
-            }
+            return repoCommits.map(commit => ({
+              message: commit.commit.message,
+              sha: commit.sha,
+              author: commit.commit.author.name,
+              date: commit.commit.author.date,
+              url: commit.html_url,
+              repo: repo.full_name
+            }));
           }
         } catch (err) {
-          // Skip repos that fail (might be empty or have issues)
           console.log(`Skipped ${repo.full_name}:`, err);
         }
+        return [];
+      });
 
-        if (commits.length >= COMMITS_LIMIT) break;
+      // Wait for all fetches to complete
+      const commitArrays = await Promise.all(commitPromises);
+
+      // Flatten and merge all commits
+      for (const repoCommits of commitArrays) {
+        allCommits.push(...repoCommits);
       }
+
+      // Sort all commits by date (newest first)
+      allCommits.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // Take only the most recent commits across all repos
+      const commits = allCommits.slice(0, COMMITS_LIMIT);
 
       // Clear container
       container.textContent = '';
